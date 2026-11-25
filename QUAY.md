@@ -12,6 +12,13 @@ The `blvm` binary, its features, and its release process stay Bitcoin Commons. T
 
 `upstream` is `https://github.com/BTCDecoded/blvm.git`. Merge their release tags. Do not push this fork to BTCDecoded remotes.
 
+Release-note CI (`scripts/release/build_release_notes.py --check`) regenerates published sections from **git tags** merged into `HEAD` (for example `v0.3.0-beta.9`). A fresh Quay clone or GitHub mirror that has history but no tags will fail that job with empty regenerated sections. After adding the upstream remote:
+
+```bash
+git fetch upstream --tags
+git push origin --tags
+```
+
 ## What Quay adds
 
 `quay/` is a separate package. It is not a workspace member and it is not linked into the default `blvm` binary. `blvm-payment` is the precedent: a separate process. `quay/module.toml` names the module for an operator who later copies the `quay` binary into a node `modules_dir`. It is not listed in `registry/modules.json`, and `blvm.toml.example` still points the registry at BTCDecoded.

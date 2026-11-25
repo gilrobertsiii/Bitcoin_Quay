@@ -477,7 +477,14 @@ def check_notes(path: Path, fresh: str) -> int:
     generated = published(fresh)
     if disk.keys() != generated.keys():
         print("published sections:", ", ".join(sorted(disk)))
-        print("regenerated sections:", ", ".join(sorted(generated)))
+        print("regenerated sections:", ", ".join(sorted(generated)) or "(none)")
+        if disk and not generated:
+            print(
+                "no project tags were found for regeneration "
+                "(need tags matching v0.2+ / v1+ merged into HEAD). "
+                "For a Quay fork: git fetch upstream --tags && git push origin --tags",
+                flush=True,
+            )
         return 1
     for name in sorted(generated):
         if disk[name] != generated[name]:
