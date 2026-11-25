@@ -1,0 +1,11 @@
+name = "quay"
+version = "0.1.0"
+description = "Compliance controls: dual control, an evidence log, and an integration allowlist. Separate process. Not linked into the default blvm binary."
+author = "Bitcoin Quay"
+entry_point = "quay"
+
+capabilities = [
+    "dual_control",
+    "evidence_export",
+    "integration_allowlist",
+]

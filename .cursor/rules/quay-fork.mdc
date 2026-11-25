@@ -1,0 +1,13 @@
+---
+description: Bitcoin Quay tracks BTCDecoded/blvm. Keep Quay's own code in quay/ and website/.
+alwaysApply: true
+---
+
+# Bitcoin Quay fork
+
+This repository tracks `BTCDecoded/blvm`. Quay's own code stays in `quay/` and `website/`.
+
+- Do not push this fork to BTCDecoded remotes.
+- Upstream tag merges restore `[patch.crates-io]` in `Cargo.toml`. Drop that block so the fork keeps building from crates.io. See `QUAY.md`.
+- Profiles describe control design. Do not claim SOC, PCI, or NACHA certification.
+- Do not add key custody, freeform wallet send, PAN storage, or ACH file generation.

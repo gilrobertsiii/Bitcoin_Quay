@@ -53,16 +53,8 @@ rkyv = "=0.8.18"
 [target.'cfg(all(target_os = "linux", target_arch = "aarch64"))'.dependencies]
 openssl = { version = "0.10", features = ["vendored"] }
 
-# Local monorepo: use sibling checkouts instead of crates.io (omit this file on CI if you need a pure registry build).
-[patch.crates-io]
-blvm-primitives = { path = "../blvm-primitives" }
-blvm-protocol = { path = "../blvm-protocol" }
-blvm-consensus = { path = "../blvm-consensus" }
-blvm-secp256k1 = { path = "../blvm-secp256k1" }
-blvm-spec-lock = { path = "../blvm-spec-lock" }
-blvm-muhash = { path = "../blvm-muhash" }
-blvm-node = { path = "../blvm-node" }
-blvm-sdk = { path = "../blvm-sdk" }
+# Quay fork: sibling path patches are omitted so this repo builds from crates.io.
+# Upstream tag merges restore [patch.crates-io]; drop that block again. See QUAY.md.
 
 [features]
 default = [

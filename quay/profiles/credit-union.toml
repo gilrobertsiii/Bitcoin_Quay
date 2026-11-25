@@ -1,0 +1,5 @@
+name = "credit-union"
+mask_member_data = true
+require_vendor_decision_id = true
+allowed_kinds = ["integration"]
+connectors = ["core-query", "sanctions-vendor", "processor-decision"]

@@ -1,0 +1,22 @@
+name = "soc-crosswalk"
+mask_member_data = true
+require_vendor_decision_id = true
+allowed_kinds = ["integration"]
+connectors = ["core-query", "sanctions-vendor", "processor-decision"]
+attestation = false
+
+[[crosswalk]]
+control = "dual-control"
+criteria = "A second person decides an intent. The maker of an intent cannot decide it. Viewer and Examiner roles cannot decide."
+
+[[crosswalk]]
+control = "evidence-log"
+criteria = "Each create and decision appends an event with the actor, the action, the time, and any vendor decision id."
+
+[[crosswalk]]
+control = "integration-allowlist"
+criteria = "External systems are limited to connectors named in the profile. An unknown connector is refused."
+
+[[crosswalk]]
+control = "examiner-read-only"
+criteria = "The Examiner role can be given the evidence export. That role cannot create or decide an intent."

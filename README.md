@@ -1,3 +1,9 @@
+# Bitcoin Quay
+
+Compliance-oriented fork of [BTCDecoded/blvm](https://github.com/BTCDecoded/blvm). The node binary stays upstream BLVM and builds from crates.io. Quay adds dual control, an evidence log, and an integration allowlist in [`quay/`](quay/), plus the promo site in [`website/`](website/). See [QUAY.md](QUAY.md).
+
+---
+
 # BLVM Node
 
 **Main binary for the Bitcoin Commons BLVM full node** — the `blvm` executable wrapping the [`blvm-node`](https://github.com/BTCDecoded/blvm-node) library.
