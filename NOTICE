@@ -1,0 +1,13 @@
+Bitcoin Quay
+============
+
+This repository is a compliance-oriented fork of BTCDecoded/blvm (Bitcoin Commons).
+
+Copyright (c) 2024 Bitcoin Commons Team
+  Upstream BLVM node binary, release tooling, and inherited documentation.
+
+Copyright (c) 2026 Bitcoin Quay contributors
+  Quay-authored material under quay/ and website/, plus Quay-specific docs
+  (QUAY.md and Quay sections of README, SECURITY, and CONTRIBUTING).
+
+All of the above is licensed under the MIT License. See LICENSE.

@@ -39,3 +39,12 @@ Profiles:
 ## Promo site
 
 `website/` is the public site for `bitcoinquay.com`. The Vercel project `bitcoin-quay` uses `website` as its root directory. The site does not ship the operator console, waitlist storage, or demo credentials.
+
+## Deferred (may be open-sourced later)
+
+The following stay out of the public tree for now and can be published in a later pass:
+
+- Operator console (RBAC UI, approvals queue, integration boundary UI)
+- Local planning materials under `planning/` (gitignored)
+
+Until then, dual-control behavior is exercised via the `quay/` crate and its tests, not a shipped web console in this repository.

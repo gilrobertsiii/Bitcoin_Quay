@@ -31,10 +31,22 @@ data/
 # Local Cargo overrides
 .cargo/config.toml
 
-# Promo site
+# Promo site / local Node
 node_modules/
+.next/
 website/.next/
 website/node_modules/
+.vercel/
+
+# Env / secrets (never commit)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Local-only planning (publish later if desired; not in the public tree yet)
+planning/
 
 # Editor files
 .vscode/

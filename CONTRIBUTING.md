@@ -1,102 +1,73 @@
-# Contributing to Bitcoin Commons (blvm)
+# Contributing to Bitcoin Quay
 
-Thank you for your interest in contributing to the Bitcoin Commons build and release system! This document contains **repo-specific guidelines only**. For comprehensive contributing guidelines, see the [BLVM Documentation](https://docs.btcdecoded.org/blvm/development/contributing.html).
-
-## Quick Links
-
-- **[Complete Contributing Guide](https://docs.btcdecoded.org/blvm/development/contributing.html)** - Full developer workflow
-- **[PR Process](https://docs.btcdecoded.org/blvm/development/pr-process.html)** - Governance tiers and review process
-- **[Release Process](https://docs.btcdecoded.org/blvm/development/release-process.html)** - Release workflow
+Thank you for contributing. This repository is a **compliance-oriented fork** of [BTCDecoded/blvm](https://github.com/BTCDecoded/blvm). Quay-authored code lives in `quay/` and `website/`. The root tree is the upstream BLVM node binary and release tooling.
 
 ## Code of Conduct
 
-This project follows the [Rust Code of Conduct](https://www.rust-lang.org/policies/code-of-conduct). By participating, you agree to uphold this code.
+This project follows the [Rust Code of Conduct](https://www.rust-lang.org/policies/code-of-conduct).
 
-## Repository-Specific Guidelines
+## Fork rules (read first)
 
-### Build Script Changes
+- **Do not push this fork to BTCDecoded remotes.** Upstream is pull/merge only. See [QUAY.md](QUAY.md).
+- Quay’s own code stays in `quay/` and `website/` (and Quay-specific docs).
+- When you merge an upstream release tag, drop any restored `[patch.crates-io]` block in `Cargo.toml` so the fork keeps building from crates.io.
+- Profiles describe control **design**. Do not claim SOC, PCI, or NACHA certification in docs or UI copy.
+- Do not add key custody, freeform wallet send, PAN storage, or ACH file generation.
 
-The `build.sh` script is critical for the entire Bitcoin Commons ecosystem:
+## Where to contribute
 
-- **Test thoroughly** - Changes affect all repositories
-- **Maintain backward compatibility** - Don't break existing workflows
-- **Document new features** - Update README and BUILD_SYSTEM.md
-- **Follow bash best practices** - Use `set -euo pipefail`, proper error handling
+| Area | Path | Notes |
+|------|------|--------|
+| Dual control / evidence / allowlist | `quay/` | Prefer `cargo test --manifest-path quay/Cargo.toml` |
+| Promo site | `website/` | Next.js; Vercel root is `website/` |
+| Upstream node / release scripts | root tree | Prefer fixing upstream in BTCDecoded when the change is not Quay-specific |
 
-### Version Coordination
+For broad BLVM developer workflow, see the [upstream contributing guide](https://docs.btcdecoded.org/blvm/development/contributing.html).
 
-When modifying `versions.toml`:
+## Development setup
 
-- **Coordinate with all repos** - Ensure compatibility
-- **Update metadata fields** - Fill in `last_updated`, `updated_by`, `release_notes`
-- **Test version validation** - Run `verify-versions.sh`
-- **Document breaking changes** - If version requirements change
-
-### Workflow Changes
-
-For GitHub Actions workflows:
-
-- **Test locally first** - Use `act` or similar tools when possible
-- **Maintain reusability** - Workflows are used by other repos
-- **Document inputs/outputs** - Clear parameter descriptions
-- **Version workflow calls** - Use specific tags/commits for stability
-
-### Script Standards
-
-All scripts should:
-
-- Use `#!/bin/bash` with `set -euo pipefail`
-- Include proper error messages
-- Support `--help` flags
-- Follow consistent naming conventions
-- Include inline documentation
-
-## Development Setup
-
-### Prerequisites
-
-- Bash 4.0+
-- Git
-- Access to Bitcoin Commons repositories (for testing)
-
-### Testing Build Scripts
+### Quay crate
 
 ```bash
-# Test build script
-./build.sh --mode dev
-
-# Test version verification
-./scripts/verify-versions.sh
-
-# Test artifact collection
-./scripts/collect-artifacts.sh --test
+cargo test --manifest-path quay/Cargo.toml
+cargo run --manifest-path quay/Cargo.toml -- export --ledger ledger.json
 ```
 
-## Review Process
+### Website
 
-### Pull Request Requirements
+```bash
+cd website
+npm install
+npm run dev
+```
 
-- [ ] **Build scripts tested** - Verified with local repos
-- [ ] **Documentation updated** - README and relevant docs
-- [ ] **Version coordination** - Updated versions.toml if needed
-- [ ] **Workflows tested** - GitHub Actions workflows work
-- [ ] **Backward compatible** - Doesn't break existing usage
+### BLVM binary (this fork)
 
-### Review Criteria
+```bash
+cargo build --release --locked
+```
 
-Reviewers will check:
+Requires the Rust toolchain in [`rust-toolchain.toml`](rust-toolchain.toml). Dependencies resolve from crates.io (no sibling-checkout patch table).
 
-1. **Correctness** - Does the code work as intended?
-2. **Compatibility** - Does it work with all repos?
-3. **Documentation** - Is it clear and complete?
-4. **Testing** - Are changes properly tested?
-5. **Security** - Any potential vulnerabilities?
+## Pull requests
 
-## Getting Help
+- [ ] Quay changes include tests where behavior is enforceable (`quay/tests/`)
+- [ ] Docs updated (`QUAY.md`, README Quay section) when behavior or layout changes
+- [ ] No secrets, `.env*`, or local planning materials in the PR
+- [ ] No push/target aimed at BTCDecoded remotes
+- [ ] Compliance copy stays non-certifying (control design only)
 
-- **Documentation**: [docs.btcdecoded.org/blvm](https://docs.btcdecoded.org/blvm)
-- **Issues**: Use GitHub issues for bugs and feature requests
-- **Discussions**: Use GitHub discussions for questions
-- **Security**: See [SECURITY.md](SECURITY.md)
+### Review focus
 
-Thank you for contributing to Bitcoin Commons!
+1. Correctness of dual-control and evidence rules  
+2. Allowlist enforcement  
+3. Clear separation from upstream BLVM  
+4. Security (no credential leakage; no custody/PAN/ACH surfaces)
+
+## Security
+
+See [SECURITY.md](SECURITY.md). Quay bugs → this repo’s private reporting. Consensus / node bugs → Bitcoin Commons / BTCDecoded.
+
+## License
+
+Contributions are under the MIT License ([LICENSE](LICENSE), [NOTICE](NOTICE)).

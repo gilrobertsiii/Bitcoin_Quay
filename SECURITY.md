@@ -1,15 +1,41 @@
 # Security policy
 
-BLVM validates Bitcoin. A consensus bug, a remote crash, and a memory-safety bug are the reports we want first.
+Bitcoin Quay is a fork of [BTCDecoded/blvm](https://github.com/BTCDecoded/blvm). Report bugs to the project that owns the code.
 
-## Report in private
+## Quay (`quay/`, `website/`, Quay docs)
 
-Do not open a public GitHub issue for a vulnerability.
+Do not open a public GitHub issue for a vulnerability in Quay-authored code.
 
-1. GitHub private vulnerability reporting on the repository that contains the bug: `https://github.com/BTCDecoded/<repo>/security/advisories/new`.
+1. Use **GitHub private vulnerability reporting** on this repository:  
+   `https://github.com/gilrobertsiii/Bitcoin_Quay/security/advisories/new`
+2. If private reporting is unavailable, open a private channel with the repository owner listed on GitHub.
+
+Include the path (`quay/` or `website/`), commit, and a minimal reproduction. Quay does not custody keys, store PAN, or generate ACH files; reports about those features being *added* are in scope as policy violations.
+
+### Quay scope
+
+In scope:
+
+- Dual-control bypass (self-approval, wrong role can create or decide).
+- Tampering with or forging append-only evidence.
+- Integration allowlist bypass (unknown connector accepted).
+- Exposure of secrets in `website/` build or deploy config shipped in this repo.
+
+Out of scope:
+
+- Demo or local-only configuration mistakes on a private deploy.
+- Third-party Vercel / hosting misconfiguration outside this repository.
+- Upstream BLVM consensus, P2P, or RPC bugs (see below).
+
+## Upstream BLVM (node, consensus, release tooling)
+
+Consensus bugs, remote crashes, and memory-safety issues in the BLVM node stack should be reported to **Bitcoin Commons**, not as Quay product bugs.
+
+1. GitHub private vulnerability reporting on the upstream repo that contains the bug:  
+   `https://github.com/BTCDecoded/<repo>/security/advisories/new`
 2. Email `security@thebitcoincommons.org`.
 
-The encrypted channel is that mailbox. The key fingerprint is `338B 0CE4 AE55 6EBD A677 2C51 DE34 66C3 CA36 3748`. Encrypt to `security@thebitcoincommons.org`. GitHub private reporting stays available. Do not send a live mainnet exploit to a public list.
+The encrypted channel is that mailbox. The key fingerprint is `338B 0CE4 AE55 6EBD A677 2C51 DE34 66C3 CA36 3748`. Encrypt to `security@thebitcoincommons.org`. Do not send a live mainnet exploit to a public list.
 
 ```
 -----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -24,89 +50,31 @@ cNj0nmYE8yY++dd2AA==
 -----END PGP PUBLIC KEY BLOCK-----
 ```
 
-Include what you can: the crate, the commit, the network, whether you think it splits the chain or only crashes one process, and a minimal reproduction. A patch is welcome and not required.
+### Upstream scope (summary)
 
-## Scope
+In scope for Commons / BTCDecoded:
 
-In scope:
+- Consensus and validation in `blvm-consensus`, `blvm-spec`, `blvm-spec-lock`, and frozen paths in `blvm-protocol` and `blvm-node`.
+- Remote crash, denial of service, and memory safety in the node, RPC, and P2P stack.
+- Authentication bypass on RPC; chainstate corruption after crash or reorg.
 
-- Consensus and validation in `blvm-consensus`, `blvm-spec`, `blvm-spec-lock`, and the frozen paths in `blvm-protocol` and `blvm-node`.
-- Remote crash, denial of service, and memory safety in the node, the RPC server, and the P2P stack.
-- Authentication bypass on RPC.
-- Chainstate corruption after a crash or a reorg.
-
-Out of scope:
+Out of scope for those reports:
 
 - A third-party module you installed yourself, unless the node failed to confine it.
 - Social engineering of operators.
-- Issues that require a local account and do not cross into chainstate or keys, unless they are memory safety.
 
-The node does not custody keys in the default build. Wallet-key bugs in a separate module are in scope for that module's repository and out of scope for consensus.
+This fork ships the `blvm` binary and release scripts inherited from upstream. Advisory JSON under `docs/security/advisories/` and metrics under `docs/security/METRICS.md` follow the upstream append-only record. Prefer reporting node bugs upstream so fixes land in Commons releases this fork can merge.
 
-## Response targets
+## Response targets (Quay)
 
-These are targets, not a claim about past performance. The advisory record is the evidence.
+These are targets for Quay-authored code, not a claim about past performance.
 
 | Step | Target |
 | --- | --- |
 | Acknowledgement | 2 days |
-| Triage, with a severity label | 7 days |
-| Fix for consensus, remote crash, or memory safety | 14 days after triage |
-| Fix for resource exhaustion | 30 days after triage |
-| Fix for local-only and informational | 90 days after triage |
-| Disclosure | When the fix is in a release, or sooner if the bug is being exploited. The default embargo after a fix is released is none: the release is the disclosure. A reporter can ask for a coordinated date up to 90 days after the fix. |
+| Triage | 7 days |
+| Fix for dual-control or evidence integrity | 14 days after triage |
+| Fix for allowlist or website secret exposure | 30 days after triage |
+| Disclosure | When the fix is released, or sooner if actively exploited |
 
-Severity labels, tied to node impact: chain split or consensus divergence, remote crash, resource exhaustion, local-only, and informational.
-
-## Embargo and credit
-
-We keep the report private until the fix is released, unless the bug is already public or actively exploited. We credit the reporter in the advisory when they agree in writing. Silence is not consent. The reconstructed November entries leave the reporter blank and set `reporter_consent` to `pending`.
-
-## Advisories
-
-The append-only record is `docs/security/advisories/` in this repository. One OSV JSON file per advisory id, plus `INDEX.md`. A correction is a new id that references the old one. Do not edit a published file. Public counts are `docs/security/METRICS.md`.
-
-Each advisory file is signed with key `338B 0CE4 AE55 6EBD A677 2C51 DE34 66C3 CA36 3748`, the same key as a release tag. The signature is the `.json.asc` file beside the JSON.
-
-Dependency advisories that affect a shipped build get an entry in the same record. `cargo audit` and `cargo deny` run in CI. Ignore entries belong in `.cargo/audit.toml` with a reason, not only in a workflow flag.
-
-## Supported versions
-
-The supported project line is `v0.2.0-beta.1`. Security fixes for the node binary target that tag. A crate's supported line stays its highest published `0.1.x` tag until that crate's own release says otherwise. Older tags are not a second maintained line.
-
-The reporting policy above is the one in force. Older timelines, bounty language, and an "all 0.1.x supported" table are not restored. The notes below are this repository's existing boundary text.
-
-This repository ships the `blvm` binary and the release scripts.
-
-#### Critical (P0)
-- Build script injection vulnerabilities
-- Version coordination tampering
-- Release artifact corruption
-- Workflow security bypasses
-- Supply chain attacks
-
-#### High (P1)
-- Script execution vulnerabilities
-- Configuration file parsing issues
-- Authentication/authorization bypasses
-- Information disclosure
-
-### Security Considerations
-
-#### Build Script Security
-- All scripts must validate inputs
-- No command injection vulnerabilities
-- Proper file path sanitization
-- Secure temporary file handling
-
-#### Version Coordination
-- Version files must be validated
-- No tampering with version mappings
-- Secure version file distribution
-- Integrity checks on version data
-
-#### Workflow Security
-- GitHub Actions workflows must be secure
-- No secrets in workflow files
-- Proper authentication for API calls
-- Secure artifact handling
+Upstream BLVM response targets remain those published by Bitcoin Commons in their security policy.

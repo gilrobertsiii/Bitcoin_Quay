@@ -1,6 +1,42 @@
 # Bitcoin Quay
 
-Compliance-oriented fork of [BTCDecoded/blvm](https://github.com/BTCDecoded/blvm). The node binary stays upstream BLVM and builds from crates.io. Quay adds dual control, an evidence log, and an integration allowlist in [`quay/`](quay/), plus the promo site in [`website/`](website/). See [QUAY.md](QUAY.md).
+Compliance-oriented fork of [BTCDecoded/blvm](https://github.com/BTCDecoded/blvm). The `blvm` binary stays upstream BLVM and builds from crates.io. Quay adds dual control, an evidence log, and an integration allowlist in [`quay/`](quay/), plus the promo site in [`website/`](website/).
+
+Profiles describe control design. This project does **not** claim SOC, PCI, or NACHA certification.
+
+See [QUAY.md](QUAY.md) for the fork layout, upstream merge rules, and what Quay refuses (custody, freeform send, PAN, ACH file generation).
+
+## Quick start (Quay)
+
+```bash
+# Dual-control / evidence crate
+cargo test --manifest-path quay/Cargo.toml
+
+# Promo site (Vercel root directory: website/)
+cd website && npm install && npm run dev
+```
+
+| Path | Role |
+|------|------|
+| `quay/` | Dual control, append-only evidence, integration allowlist |
+| `website/` | Public site for [bitcoinquay.com](https://bitcoinquay.com) |
+| Root `blvm` tree | Upstream BLVM node binary and release tooling |
+
+Upstream remote: `https://github.com/BTCDecoded/blvm.git`. Merge their release tags. **Do not push this fork to BTCDecoded remotes.**
+
+An operator console and local planning materials may be published later; they are not part of this public tree yet.
+
+## License
+
+[MIT](LICENSE). Inherited BLVM code retains Bitcoin Commons copyright. Quay-authored code in `quay/` and `website/` is also MIT — see [NOTICE](NOTICE).
+
+## Security
+
+Report Quay issues (`quay/`, `website/`) via this repository's private vulnerability reporting. Upstream BLVM consensus and node bugs go to Bitcoin Commons — see [SECURITY.md](SECURITY.md).
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 
@@ -8,7 +44,7 @@ Compliance-oriented fork of [BTCDecoded/blvm](https://github.com/BTCDecoded/blvm
 
 **Main binary for the Bitcoin Commons BLVM full node** — the `blvm` executable wrapping the [`blvm-node`](https://github.com/BTCDecoded/blvm-node) library.
 
-Operator guides live in **[docs.btcdecoded.org/blvm](https://docs.btcdecoded.org/blvm)**. This README is a repo landing page only.
+Operator guides live in **[docs.btcdecoded.org/blvm](https://docs.btcdecoded.org/blvm)**. The sections below are the upstream landing page for the node binary in this fork.
 
 ## Install
 
@@ -35,7 +71,7 @@ The Linux `.deb`, `.rpm`, and Arch packages install a systemd unit and do not en
 
 **Nightly (rolling):** `develop` branch → GitHub `nightly` assets and `ghcr.io/btcdecoded/blvm:nightly`. See [Release channels](https://docs.btcdecoded.org/blvm/development/release-process.html#release-channels).
 
-**Source:** clone this repo; toolchain in [`rust-toolchain.toml`](rust-toolchain.toml). Feature sets differ by platform — [build variants](https://docs.btcdecoded.org/blvm/development/release-process.html#build-variants).
+**Source:** clone this Quay fork or upstream `blvm`; toolchain in [`rust-toolchain.toml`](rust-toolchain.toml). Feature sets differ by platform — [build variants](https://docs.btcdecoded.org/blvm/development/release-process.html#build-variants).
 
 Release tarballs also ship helper scripts and example configs (e.g. [`blvm-mainnet-ibd.toml.example`](blvm-mainnet-ibd.toml.example), [`scripts/start-ibd-mainnet.sh`](scripts/start-ibd-mainnet.sh)).
 
@@ -52,7 +88,7 @@ Release tarballs also ship helper scripts and example configs (e.g. [`blvm-mainn
 | IBD tuning | [IBD configuration](https://docs.btcdecoded.org/blvm/node/configuration.html#ibd-configuration) · [IBD engine](https://docs.btcdecoded.org/blvm/node/ibd-engine.html) |
 | Service manager | [systemd, OpenRC, launchd, Windows](https://docs.btcdecoded.org/blvm/node/operations.html#service-manager) |
 | Troubleshooting | [Troubleshooting](https://docs.btcdecoded.org/blvm/appendices/troubleshooting.html) |
-| Contributing | [Contributing](https://docs.btcdecoded.org/blvm/development/contributing.html) |
+| Contributing (upstream) | [Contributing](https://docs.btcdecoded.org/blvm/development/contributing.html) |
 
 ## Quick start (regtest)
 
@@ -82,10 +118,12 @@ RPC defaults: mainnet **8332**, testnet **18332**, regtest **18443**. Details: [
 ## Build from source
 
 ```bash
-git clone https://github.com/BTCDecoded/blvm.git
-cd blvm
+git clone https://github.com/gilrobertsiii/Bitcoin_Quay.git
+cd Bitcoin_Quay
 cargo build --release --locked
 ```
+
+For upstream-only work, clone [BTCDecoded/blvm](https://github.com/BTCDecoded/blvm) instead. This fork omits the upstream `[patch.crates-io]` sibling checkout block so dependencies resolve from crates.io — see [QUAY.md](QUAY.md).
 
 Optional backends and experimental flags: explicit `--features` — [Installation — experimental variant](https://docs.btcdecoded.org/blvm/getting-started/installation.html#experimental-variant).
 
@@ -101,7 +139,3 @@ blvm (binary)
 ```
 
 [Stack overview](https://docs.btcdecoded.org/blvm/architecture/system-overview.html)
-
-## License
-
-[MIT](LICENSE)
