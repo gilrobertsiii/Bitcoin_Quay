@@ -1,10 +1,14 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+import { NON_CERTIFICATION_NOTICE } from "@/lib/content";
+import { COMMONS_URL } from "@/lib/copy";
+
 const NAV = [
   { href: "/", label: "Home" },
-  { href: "/product", label: "Product" },
-  { href: "/security", label: "Security" },
+  { href: "/industries", label: "Industries" },
+  { href: "/project", label: "Project" },
+  { href: "/breakdown", label: "Breakdown" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -12,21 +16,51 @@ export function Shell({ children }: { children: ReactNode }) {
   return (
     <div className="shell">
       <header className="bar">
-        <Link className="wordmark" href="/">
-          BITCOIN <span>QUAY</span>
-        </Link>
-        <nav>
-          {NAV.map((item) => (
-            <Link key={item.href} href={item.href}>
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <div className="container bar-inner">
+          <Link className="wordmark" href="/">
+            BITCOIN <span>QUAY</span>
+          </Link>
+          <nav aria-label="Primary">
+            {NAV.map((item) => (
+              <Link key={item.href} href={item.href}>
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
       </header>
       <main>{children}</main>
       <footer className="foot">
-        <span>MIT. A fork of BTCDecoded/blvm.</span>
-        <span>Under development. Not for production member data.</span>
+        <div className="container foot-inner">
+          <div className="foot-meta">
+            <p className="foot-brand">
+              <strong>MIT License.</strong> Independent compliance fork of{" "}
+              <a
+                href="https://github.com/BTCDecoded/blvm"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                BTCDecoded/blvm ↗
+              </a>
+              . Pre-Alpha contributor access is invite-only; public open source
+              at Alpha.
+            </p>
+            <p className="foot-notice">{NON_CERTIFICATION_NOTICE}</p>
+          </div>
+          <nav className="foot-links" aria-label="Footer">
+            <Link href="/industries">Industries</Link>
+            <Link href="/project">Project</Link>
+            <Link href="/breakdown">Breakdown</Link>
+            <Link href="/contact">Contact</Link>
+            <a
+              href={COMMONS_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              The Bitcoin Commons ↗
+            </a>
+          </nav>
+        </div>
       </footer>
     </div>
   );

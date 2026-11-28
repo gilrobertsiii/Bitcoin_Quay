@@ -22,7 +22,7 @@ const sans = Poppins({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Bitcoin Quay",
+    default: "Bitcoin Quay — Open Controls for Sovereign Bitcoin",
     template: "%s · Bitcoin Quay",
   },
   description: DESCRIPTION,
