@@ -335,13 +335,6 @@ p {
   color: var(--muted);
 }
 
-.constellation-caption {
-  margin-top: 0.85rem;
-  font-size: 0.76rem;
-  color: var(--muted);
-  line-height: 1.45;
-}
-
 /* Notices & Callouts */
 
 .notice {

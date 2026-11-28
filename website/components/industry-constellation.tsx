@@ -33,11 +33,6 @@ export function IndustryConstellation() {
           </li>
         ))}
       </ol>
-      <figcaption className="constellation-caption">
-        Placeholder visual: all nine target industries mapped onto one shared
-        open-source compliance kernel, ordered from Credit Unions &amp; CDFIs
-        first to US Military.
-      </figcaption>
     </figure>
   );
 }
