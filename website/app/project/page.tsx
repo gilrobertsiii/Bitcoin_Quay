@@ -1,23 +1,37 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { Breadcrumbs } from "@/components/breadcrumbs";
+import { FaqSection } from "@/components/faq-section";
+import { JsonLd } from "@/components/json-ld";
 import { MailtoCta } from "@/components/mailto-cta";
-import { NON_CERTIFICATION_NOTICE, REPO_MAP } from "@/lib/content";
+import {
+  NON_CERTIFICATION_NOTICE,
+  PROJECT_FAQS,
+  REPO_MAP,
+} from "@/lib/content";
 import {
   COMMONS_SECURITY_URL,
   COMMONS_URL,
   CONTRIBUTE_INVITE_MAILTO,
 } from "@/lib/copy";
+import { projectJsonLd } from "@/lib/json-ld";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "The Project",
-  description:
-    "Why high-compliance Bitcoin software must be open source, how the Bitcoin Quay repository is organized, and how to join as a contributor.",
-};
+export const metadata: Metadata = buildPageMetadata("project");
 
 export default function ProjectPage() {
   return (
     <div className="container page-body">
+      <JsonLd data={projectJsonLd()} />
+
+      <Breadcrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "The Project" },
+        ]}
+      />
+
       <header className="page-head">
         <p className="kicker">For Contributors &amp; Builders</p>
         <h1>Why compliance software belongs in the open.</h1>
@@ -72,6 +86,9 @@ export default function ProjectPage() {
 
         <div className="table-wrap">
           <table className="data-table">
+            <caption className="sr-only">
+              Bitcoin Quay repository directory map and responsibilities
+            </caption>
             <thead>
               <tr>
                 <th>Path</th>
@@ -142,7 +159,7 @@ export default function ProjectPage() {
         </div>
       </section>
 
-      <section className="page-section">
+      <section id="security" className="page-section">
         <h2>Security reporting</h2>
         <p>
           Report vulnerabilities in Quay-authored code (<code>quay/</code> or{" "}
@@ -160,6 +177,12 @@ export default function ProjectPage() {
           .
         </p>
       </section>
+
+      <FaqSection
+        heading="Questions about the open-source project"
+        intro="How Bitcoin Quay stays aligned with upstream Bitcoin Commons and how Pre-Alpha contributors can get involved."
+        items={PROJECT_FAQS}
+      />
     </div>
   );
 }

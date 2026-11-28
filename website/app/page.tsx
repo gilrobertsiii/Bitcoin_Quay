@@ -1,6 +1,8 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { IndustryConstellation } from "@/components/industry-constellation";
+import { JsonLd } from "@/components/json-ld";
 import { MailtoCta } from "@/components/mailto-cta";
 import { HOME_CONTENT, INDUSTRIES, NON_CERTIFICATION_NOTICE } from "@/lib/content";
 import {
@@ -8,6 +10,10 @@ import {
   CONTRIBUTE_INVITE_MAILTO,
   CU_UPDATES_MAILTO,
 } from "@/lib/copy";
+import { homeJsonLd } from "@/lib/json-ld";
+import { buildPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildPageMetadata("home");
 
 export default function HomePage() {
   const { hero, helloWorld, sneakPeek, deeperDive, commonsStrip, contribute } =
@@ -15,6 +21,8 @@ export default function HomePage() {
 
   return (
     <>
+      <JsonLd data={homeJsonLd()} />
+
       {/* 1) Hero section — hook in <= 5 seconds */}
       <section className="section hero">
         <div className="container hero-layout">
@@ -86,8 +94,10 @@ export default function HomePage() {
           <ol className="order-strip" aria-label="Target sectors in rollout order">
             {INDUSTRIES.map((sector) => (
               <li key={sector.slug}>
-                <span className="order-num">{sector.rank}.</span>{" "}
-                {sector.shortName}
+                <Link href={`/industries#${sector.slug}`}>
+                  <span className="order-num">{sector.rank}.</span>{" "}
+                  {sector.shortName}
+                </Link>
               </li>
             ))}
           </ol>

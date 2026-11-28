@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { NON_CERTIFICATION_NOTICE } from "@/lib/content";
-import { COMMONS_URL } from "@/lib/copy";
+import { COMMONS_URL, UPSTREAM_REPO_URL } from "@/lib/copy";
 
 const NAV = [
   { href: "/", label: "Home" },
@@ -15,6 +15,9 @@ const NAV = [
 export function Shell({ children }: { children: ReactNode }) {
   return (
     <div className="shell">
+      <a className="skip-link" href="#main-content">
+        Skip to main content
+      </a>
       <header className="bar">
         <div className="container bar-inner">
           <Link className="wordmark" href="/">
@@ -29,14 +32,14 @@ export function Shell({ children }: { children: ReactNode }) {
           </nav>
         </div>
       </header>
-      <main>{children}</main>
+      <main id="main-content">{children}</main>
       <footer className="foot">
         <div className="container foot-inner">
           <div className="foot-meta">
             <p className="foot-brand">
               <strong>MIT License.</strong> Independent compliance fork of{" "}
               <a
-                href="https://github.com/BTCDecoded/blvm"
+                href={UPSTREAM_REPO_URL}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -59,6 +62,8 @@ export function Shell({ children }: { children: ReactNode }) {
             >
               The Bitcoin Commons ↗
             </a>
+            <a href="/sitemap.xml">Sitemap</a>
+            <a href="/llms.txt">LLM Summary</a>
           </nav>
         </div>
       </footer>

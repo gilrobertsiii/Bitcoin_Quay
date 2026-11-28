@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { Breadcrumbs } from "@/components/breadcrumbs";
+import { FaqSection } from "@/components/faq-section";
+import { JsonLd } from "@/components/json-ld";
 import { MailtoCta } from "@/components/mailto-cta";
 import {
+  BREAKDOWN_FAQS,
+  GLOSSARY_TERMS,
   INDUSTRIES,
   NON_CERTIFICATION_NOTICE,
   OUT_OF_SCOPE,
@@ -13,16 +18,23 @@ import {
   CONTRIBUTE_INVITE_MAILTO,
   CU_UPDATES_MAILTO,
 } from "@/lib/copy";
+import { breakdownJsonLd } from "@/lib/json-ld";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Full Breakdown",
-  description:
-    "Architecture, modular method (Node, Profiles, SDK), difficulty charts, and certification crosswalk targets for all nine Bitcoin Quay sectors.",
-};
+export const metadata: Metadata = buildPageMetadata("breakdown");
 
 export default function BreakdownPage() {
   return (
     <div className="container page-body">
+      <JsonLd data={breakdownJsonLd()} />
+
+      <Breadcrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Full Breakdown" },
+        ]}
+      />
+
       <header className="page-head">
         <p className="kicker">Full Project Breakdown</p>
         <h1>How Bitcoin Quay splits the node, the rules, and the apps.</h1>
@@ -130,6 +142,10 @@ export default function BreakdownPage() {
 
         <div className="table-wrap">
           <table className="data-table">
+            <caption className="sr-only">
+              Nine regulated sectors targeted by Bitcoin Quay ranked by rollout
+              order and difficulty
+            </caption>
             <thead>
               <tr>
                 <th>Order</th>
@@ -146,7 +162,11 @@ export default function BreakdownPage() {
                     <code>#{String(sector.rank).padStart(2, "0")}</code>
                   </td>
                   <td>
-                    <strong>{sector.name}</strong>
+                    <strong>
+                      <Link href={`/industries#${sector.slug}`}>
+                        {sector.name}
+                      </Link>
+                    </strong>
                   </td>
                   <td>
                     <div className="meter-cell">
@@ -187,6 +207,10 @@ export default function BreakdownPage() {
 
         <div className="table-wrap">
           <table className="data-table matrix-table">
+            <caption className="sr-only">
+              Control-design crosswalk targets across financial, privacy, public
+              sector, and critical infrastructure frameworks
+            </caption>
             <thead>
               <tr>
                 <th>Sector</th>
@@ -223,6 +247,10 @@ export default function BreakdownPage() {
 
         <div className="table-wrap">
           <table className="data-table">
+            <caption className="sr-only">
+              Five shared node-level governance controls enforced by the Quay
+              kernel
+            </caption>
             <thead>
               <tr>
                 <th>Control</th>
@@ -262,6 +290,35 @@ export default function BreakdownPage() {
           ))}
         </dl>
       </section>
+
+      {/* Plain-English Glossary (DefinedTermSet) */}
+      <section id="glossary" className="page-section">
+        <p className="kicker">Plain-English Definitions</p>
+        <h2>6. Compliance &amp; architecture glossary</h2>
+        <p className="section-intro">
+          Short, jargon-free definitions for the core terms used across Bitcoin
+          Quay&apos;s code and profile files.
+        </p>
+
+        <dl className="glossary-grid">
+          {GLOSSARY_TERMS.map((item) => (
+            <div
+              key={item.slug}
+              id={`term-${item.slug}`}
+              className="glossary-item"
+            >
+              <dt>{item.term}</dt>
+              <dd>{item.definition}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
+      <FaqSection
+        heading="Technical &amp; governance questions"
+        intro="Straight answers on how the Node, Profiles, and SDK split works in practice."
+        items={BREAKDOWN_FAQS}
+      />
 
       <section className="page-section callout-box">
         <h2>Want to help build this—or test it at your institution?</h2>

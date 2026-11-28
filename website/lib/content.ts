@@ -437,3 +437,139 @@ export const REPO_MAP = [
       "Tracks `BTCDecoded/blvm` release tags and builds from crates.io. Consensus stays upstream.",
   },
 ];
+
+export type FaqItem = {
+  question: string;
+  answer: string;
+};
+
+export type GlossaryTerm = {
+  slug: string;
+  term: string;
+  definition: string;
+};
+
+export const INDUSTRIES_FAQS: readonly FaqItem[] = [
+  {
+    question: "Why does Bitcoin Quay start with Credit Unions and CDFIs first?",
+    answer:
+      "Credit unions and Community Development Financial Institutions (CDFIs) are member-owned, strictly examined, and already have live institutional testers ready to review Quay's controls. Proving dual control, masked member records, and exam evidence with credit unions first establishes a tested foundation for the other eight sectors.",
+  },
+  {
+    question:
+      "Can a regulated institution run Bitcoin behind its own walls without a custodial vendor?",
+    answer:
+      "Yes, that is Bitcoin Quay's goal. Quay gives institutions open-source governance controls around an upstream BLVM Bitcoin full node so they can verify approvals, keep an append-only audit trail, and restrict outside connections on their own hardware—while keeping private key custody separate outside Quay.",
+  },
+  {
+    question:
+      "Does using a Bitcoin Quay industry profile certify an institution for SOC, NCUA, HIPAA, FedRAMP, or CMMC?",
+    answer:
+      "No. Bitcoin Quay publishes control design and auditor crosswalk criteria only. Software cannot certify an organization; formal examination or certification always happens between an institution and its independent regulator or auditor.",
+  },
+  {
+    question:
+      "How does Bitcoin Quay protect member, patient, student, or citizen data?",
+    answer:
+      "By keeping sensitive personal data out of the compliance ledger completely. Quay profiles enforce data-masking flags and refuse raw member payloads, payment card numbers (PAN), protected health information (PHI), and controlled unclassified information (CUI) inside Quay logs.",
+  },
+  {
+    question:
+      "Why are the nine sectors ordered from Credit Unions to US Military?",
+    answer:
+      "Credit Unions and CDFIs sit at number one because live testers are ready now. The remaining eight sectors—Nonprofits, Education, Payments/MSB, Banking & Insurance, Healthcare, Energy & Utilities, Civil Government, and US Military—follow in order of increasing data sensitivity, multi-agency oversight, and critical-infrastructure requirements.",
+  },
+] as const;
+
+export const PROJECT_FAQS: readonly FaqItem[] = [
+  {
+    question: "Why should high-compliance Bitcoin software be open source?",
+    answer:
+      "Closed-source compliance tools force risk officers and examiners to trust a vendor's claims without checking the code. Open-source controls let any engineer, board member, or auditor read the exact Rust logic, run the tests, and verify that dual control and allowlists cannot be silently bypassed.",
+  },
+  {
+    question:
+      "How does Bitcoin Quay relate to Bitcoin Decoded and The Bitcoin Commons?",
+    answer:
+      "Bitcoin Quay is an independent compliance fork of the BTCDecoded/blvm full node maintained by The Bitcoin Commons. Quay keeps upstream consensus and node code untouched, merges upstream release tags, adds a separate compliance crate under quay/, and never pushes fork changes back to BTCDecoded remotes.",
+  },
+  {
+    question: "How can developers or compliance reviewers contribute right now?",
+    answer:
+      "During Pre-Alpha, active repository collaboration is invite-only while live credit union testers harden the first profile. Contributors can email to request a Pre-Alpha invite, and the full project opens publicly under the MIT license upon Alpha release.",
+  },
+  {
+    question: "Where should security vulnerabilities be reported?",
+    answer:
+      "Report bugs in Quay-authored code (quay/ or website/) privately to Bitcoin Quay maintainers via GitHub private vulnerability reporting or our public contact email. Consensus, P2P, or node vulnerabilities in upstream BLVM should be reported directly to Bitcoin Commons Security.",
+  },
+] as const;
+
+export const BREAKDOWN_FAQS: readonly FaqItem[] = [
+  {
+    question: "What is the difference between the Node, Profiles, and SDK layers?",
+    answer:
+      "The Node layer pairs the upstream BLVM full node with the shared Quay compliance kernel (dual control, append-only evidence, allowlists, and hard refusals). Profiles are plain TOML files that swap in each industry's approved connectors and auditor crosswalk criteria. SDK apps are optional human workflows—such as consoles or exam-packet exporters—that only talk through the kernel's allowlist.",
+  },
+  {
+    question: "How does maker/checker dual control work in Bitcoin Quay?",
+    answer:
+      "A Maker or Compliance role creates a structured intent for a sensitive change, and a separate Checker approves or rejects it. The Quay kernel enforces in code that the maker of an intent can never decide their own request, while Viewer and Examiner roles stay strictly read-only.",
+  },
+  {
+    question: "What happens if an app tries to connect to an unapproved vendor?",
+    answer:
+      "The kernel refuses it automatically. Every external integration must name a connector explicitly listed on the active industry profile's allowlist, blocking shadow or ad-hoc connections before they run.",
+  },
+  {
+    question:
+      "Why does Bitcoin Quay refuse key custody, freeform sends, PAN storage, and ACH files?",
+    answer:
+      "Refusing those surfaces by design keeps the compliance layer small, testable, and free of high-risk custodial or cardholder-data scope. Private keys, core banking, card processing, and ACH origination stay in dedicated institutional systems while Quay tracks governance intents and vendor decision IDs.",
+  },
+  {
+    question: "How do examiners or auditors review Bitcoin Quay evidence?",
+    answer:
+      "Examiners receive a read-only export of the append-only JSON evidence log containing each actor, action, timestamp, and external vendor decision ID. Because profiles reject attestation = true at load time, crosswalk criteria serve strictly as testable design maps for independent review.",
+  },
+] as const;
+
+export const GLOSSARY_TERMS: readonly GlossaryTerm[] = [
+  {
+    slug: "dual-control",
+    term: "Dual Control (Maker / Checker)",
+    definition:
+      "A two-person rule enforced in code: one authorized person proposes a sensitive change (Maker) and a different person approves or rejects it (Checker). Nobody can approve their own request.",
+  },
+  {
+    slug: "append-only-evidence-log",
+    term: "Append-Only Evidence Log",
+    definition:
+      "An uneditable timeline where every proposal and decision adds a new record showing who acted, what happened, when it occurred, and any linked external vendor decision ID.",
+  },
+  {
+    slug: "integration-allowlist",
+    term: "Integration Allowlist",
+    definition:
+      "A short, explicit list of approved external systems declared in an industry profile. Any connector not on that list is refused automatically.",
+  },
+  {
+    slug: "industry-profile-pack",
+    term: "Industry Profile Pack",
+    definition:
+      "A plain-text TOML configuration file that adapts the shared Quay kernel to a specific regulated sector by naming its allowed connectors, masking settings, and crosswalk criteria.",
+  },
+  {
+    slug: "regulatory-control-crosswalk",
+    term: "Regulatory Control Crosswalk",
+    definition:
+      "A written map showing how technical controls correspond to criteria auditors already test (such as NCUA, SOC 2, HIPAA, or CMMC). It describes control design and is never a certification.",
+  },
+  {
+    slug: "hard-safety-refusal",
+    term: "Hard Safety Refusal",
+    definition:
+      "A built-in boundary where the software explicitly rejects out-of-scope operations—including key custody, freeform wallet sends, payment card numbers (PAN), ACH file generation, and raw personal data payloads.",
+  },
+] as const;
+

@@ -1,19 +1,33 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { Breadcrumbs } from "@/components/breadcrumbs";
+import { FaqSection } from "@/components/faq-section";
+import { JsonLd } from "@/components/json-ld";
 import { MailtoCta } from "@/components/mailto-cta";
-import { INDUSTRIES, NON_CERTIFICATION_NOTICE } from "@/lib/content";
+import {
+  INDUSTRIES,
+  INDUSTRIES_FAQS,
+  NON_CERTIFICATION_NOTICE,
+} from "@/lib/content";
 import { CU_UPDATES_MAILTO } from "@/lib/copy";
+import { industriesJsonLd } from "@/lib/json-ld";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Industries & Certifications",
-  description:
-    "Explore the nine high-compliance sectors Bitcoin Quay targets—starting with credit unions and CDFIs—and the control crosswalks planned for each.",
-};
+export const metadata: Metadata = buildPageMetadata("industries");
 
 export default function IndustriesPage() {
   return (
     <div className="container page-body">
+      <JsonLd data={industriesJsonLd()} />
+
+      <Breadcrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Industries & Certifications" },
+        ]}
+      />
+
       <header className="page-head">
         <p className="kicker">For Institutions &amp; Risk Teams</p>
         <h1>Nine regulated sectors. One open compliance kernel.</h1>
@@ -79,6 +93,12 @@ export default function IndustriesPage() {
           ))}
         </div>
       </section>
+
+      <FaqSection
+        heading="Questions about industries and crosswalks"
+        intro="Plain-language answers on rollout order, non-custodial governance, and what a control crosswalk covers."
+        items={INDUSTRIES_FAQS}
+      />
 
       <section className="page-section callout-box">
         <h2>Ready to follow the Credit Union &amp; CDFI rollout?</h2>

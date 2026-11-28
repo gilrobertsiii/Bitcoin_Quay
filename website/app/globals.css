@@ -403,6 +403,15 @@ p {
   color: var(--ink);
 }
 
+.order-strip li a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.order-strip li a:hover {
+  color: var(--gold);
+}
+
 .order-num {
   font-family: var(--font-display), monospace;
   color: var(--gold);
@@ -723,6 +732,130 @@ p {
   font-size: 0.92rem;
 }
 
+/* Accessibility & Semantic helpers */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--gold);
+  color: var(--ground);
+  padding: 0.65rem 1rem;
+  font-family: var(--font-display), monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+}
+
+/* Breadcrumbs */
+
+.breadcrumbs {
+  margin-bottom: 1.5rem;
+  font-family: var(--font-display), monospace;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.breadcrumbs ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.breadcrumbs a {
+  color: var(--ocean);
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+  color: var(--gold);
+}
+
+.breadcrumb-sep {
+  margin-left: 0.45rem;
+  color: var(--line);
+}
+
+/* FAQ & Glossary (AEO / GEO) */
+
+.faq-list {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.faq-item {
+  background: var(--ground-raise);
+  border: 1px solid var(--line-subtle);
+  border-left: 3px solid var(--ocean);
+  padding: 1.05rem 1.2rem;
+}
+
+.faq-item dt {
+  font-family: var(--font-display), monospace;
+  font-weight: 700;
+  font-size: 0.96rem;
+  color: var(--ink);
+  margin-bottom: 0.45rem;
+}
+
+.faq-item dd {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.94rem;
+}
+
+.glossary-grid {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.glossary-item {
+  background: var(--ground-raise);
+  border: 1px solid var(--line-subtle);
+  border-top: 2px solid var(--gold);
+  padding: 1rem 1.15rem;
+}
+
+.glossary-item dt {
+  font-family: var(--font-display), monospace;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--ink);
+  margin-bottom: 0.35rem;
+}
+
+.glossary-item dd {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
 /* Footer */
 
 .foot {
@@ -831,7 +964,8 @@ p {
 
   .grid,
   .sector-cols,
-  .def-list {
+  .def-list,
+  .glossary-grid {
     grid-template-columns: 1fr;
   }
 

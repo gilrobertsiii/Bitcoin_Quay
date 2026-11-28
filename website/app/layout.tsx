@@ -3,7 +3,7 @@ import { Poppins, Space_Mono } from "next/font/google";
 import type { ReactNode } from "react";
 
 import { Shell } from "@/components/shell";
-import { DESCRIPTION, SITE_URL } from "@/lib/copy";
+import { buildRootMetadata } from "@/lib/seo";
 
 import "./globals.css";
 
@@ -19,18 +19,11 @@ const sans = Poppins({
   variable: "--font-sans",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: {
-    default: "Bitcoin Quay — Open Controls for Sovereign Bitcoin",
-    template: "%s · Bitcoin Quay",
-  },
-  description: DESCRIPTION,
-};
+export const metadata: Metadata = buildRootMetadata();
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${display.variable} ${sans.variable}`}>
+    <html lang="en-US" className={`${display.variable} ${sans.variable}`}>
       <body>
         <Shell>{children}</Shell>
       </body>

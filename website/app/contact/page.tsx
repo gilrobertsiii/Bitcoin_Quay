@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { Breadcrumbs } from "@/components/breadcrumbs";
+import { JsonLd } from "@/components/json-ld";
 import { MailtoCta } from "@/components/mailto-cta";
 import { NON_CERTIFICATION_NOTICE } from "@/lib/content";
 import {
@@ -8,16 +10,23 @@ import {
   CU_UPDATES_MAILTO,
   GENERAL_MAILTO,
 } from "@/lib/copy";
+import { contactJsonLd } from "@/lib/json-ld";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description:
-    "Reach Bitcoin Quay for Credit Union / CDFI release updates, Pre-Alpha contributor invites, or general questions.",
-};
+export const metadata: Metadata = buildPageMetadata("contact");
 
 export default function ContactPage() {
   return (
     <div className="container page-body">
+      <JsonLd data={contactJsonLd()} />
+
+      <Breadcrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Contact" },
+        ]}
+      />
+
       <header className="page-head">
         <p className="kicker">Contact</p>
         <h1>Get in touch with Bitcoin Quay.</h1>
